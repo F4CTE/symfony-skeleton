@@ -2,36 +2,46 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ArticleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[ApiResource(normalizationContext: ['groups' => ['articles:read']])]
 class Article
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['articles:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['articles:read'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['articles:read'])]
     private ?string $content = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['articles:read'])]
     private ?User $author = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['articles:read'])]
     private ?Category $category = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['articles:read'])]
     private ?\DateTimeInterface $dateCreated = null;
 
     #[ORM\Column]
+    #[Groups(['articles:read'])]
     private ?bool $visible = null;
 
     public function getId(): ?int
